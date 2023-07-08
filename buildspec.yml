@@ -1,0 +1,44 @@
+version: 0.2
+
+phases: 
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Installing Node.js runtime..."
+
+  pre_build:
+    commands:
+      - echo "Welcome to my CICD pipeline"
+  build:
+    commands:
+      # Running the node.js app| install dependencies, etc.
+      - echo "Building Project..!!!!"
+      - echo "Build started on `date`"
+      - npm ci
+      - npm install pm2 --save-dev
+      - npm run start
+
+      # Building Docker image
+      - echo "Building Docker image"
+      - docker build -t my-nodejs-app .    
+      
+      # Logging in to Amazon ECR
+      - echo "Logging in to Amazon ECR"
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 936417334805.dkr.ecr.us-east-1.amazonaws.com
+  
+  post_build:
+    commands:
+      # Pushing Docker image to ECR
+      - echo "Pushing Docker image to ECR!!!!!!"
+      - docker tag my-nodejs-app:latest 936417334805.dkr.ecr.us-east-1.amazonaws.com/my-nodejs-app:latest     
+      - docker push 936417334805.dkr.ecr.us-east-1.amazonaws.com/my-nodejs-app:latest
+      - echo "Build completed on `date`" 
+
+artifacts:
+  files:
+    - '**/*'
+
+  cache:
+    paths:
+      - '/root/.npm/**/*'
