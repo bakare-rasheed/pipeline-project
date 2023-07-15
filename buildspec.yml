@@ -20,8 +20,8 @@ phases:
       - npm run start
 
       # Building Docker image ff
-      - echo "Building Docker image"
-      - docker build -t bakare . 
+      #- echo "Building Docker image"
+      #- docker build -t bakare . 
       
       # Logging in to Amazon ECR
       - echo "Logging in to Amazon ECR"
