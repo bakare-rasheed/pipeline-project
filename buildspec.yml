@@ -19,7 +19,7 @@ phases:
       - npm install pm2 --save-dev
       - npm run start
 
-      # Building Docker image
+      # Building Docker image ff
       - echo "Building Docker image"
       - docker build -t nodejs-repo .  
       
