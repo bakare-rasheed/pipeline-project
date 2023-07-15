@@ -20,19 +20,19 @@ phases:
       - npm run start
 
       # Building Docker image ff
-      #- echo "Building Docker image"
-      #- docker build -t nodejs-repo .  
+      - echo "Building Docker image"
+      - docker build -t bakare . 
       
       # Logging in to Amazon ECR
       - echo "Logging in to Amazon ECR"
-      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 678270849957.dkr.ecr.us-east-1.amazonaws.com
+      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/b7c9a8r5
   
   post_build:
     commands:
       # Pushing Docker image to ECR
       - echo "Pushing Docker image to ECR!!!!!!"
-      - docker tag nodejs-repo:latest 678270849957.dkr.ecr.us-east-1.amazonaws.com/nodejs-repo:latest     
-      - docker push 678270849957.dkr.ecr.us-east-1.amazonaws.com/nodejs-repo:latest
+      - docker tag bakare:latest public.ecr.aws/b7c9a8r5/bakare:latest    
+      - docker push public.ecr.aws/b7c9a8r5/bakare:latest
       - echo "Build completed on `date`" 
 
 artifacts:
